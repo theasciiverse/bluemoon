@@ -1,11 +1,10 @@
 # Makefile for blue, the Blue Moon solitaire game
 
 # Note: When the version changes, you also have to change
-#  * the LSM file
 #  * the RPM spec file
 VERS=2.6
 
-SOURCES = READ.ME COPYING Makefile blue.c blue.xml blue.lsm *.spec
+SOURCES = READ.ME COPYING Makefile blue.c blue.xml *.spec
 CFLAGS=-O
 
 blue: blue.c
