@@ -2,7 +2,7 @@ Name: bluemoon
 Summary: Blue Moon solitaire (text mode)
 Version: %{myversion}
 Release: 1
-URL: http://www.tuxedo.org/~esr/bluemoon/
+URL: http://www.catb.org/~esr/bluemoon/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
