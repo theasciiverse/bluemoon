@@ -177,7 +177,7 @@ int deal;
     clear();
     (void)printw(
 		 "Blue Moon %s - by Tim Lister & Eric Raymond - Deal %d.\n",
-		 VERSION, deal);
+		 RELEASE, deal);
     for(row=HEARTS;row<=CLUBS;row++)
     {
 	move(BASEROW + row + row + 2, 1);

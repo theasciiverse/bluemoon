@@ -9,7 +9,7 @@ SOURCES = READ.ME Makefile blue.c blue.xml blue.lsm *.spec
 CFLAGS=-O
 
 blue: blue.c
-	cc $(CFLAGS) -DVERSION=\"$(VERS)\" blue.c -lncurses -o blue
+	cc $(CFLAGS) -DRELEASE=\"$(VERS)\" blue.c -lncurses -o blue
 
 blue.6: blue.xml
 	xmlto man blue.xml
