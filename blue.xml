@@ -20,5 +20,5 @@ deals. A good score is 1-3 deals, 4-7 is average, 8 or more is poor.
 .SH AUTHORS
 Originally written by Tim Lister.  Visual user interface and color support by
 Eric S. Raymond <esr@snark.thyrsus.com>. The ncurses version was written in
-November 1994.  See http://www.thyrsus.com/~esr/home.html for updates, also
+November 1994.  See http://www.ccil.org/~esr/home.html for updates, also
 other software and resources by ESR.
