@@ -9,7 +9,7 @@
 
 /*
  * Compile this with the command `cc -O blue.c -lcurses -o blue'. For best
- * results, use the portable freeware ncurses(3) library.  On non-Intel
+ * results, use the open-source ncurses(3) library.  On non-Intel
  * machines, SVr4 curses is just as good.
  *
  * Upon reading this code, Tim Lister wrote:
