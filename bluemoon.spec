@@ -2,7 +2,8 @@ Name: blue
 Summary: Blue Moon solitaire (text mode)
 Version: 2.6
 Release: 1
-Source: http://www.tuxedo.org/~esr/blue/
+URL: http://www.tuxedo.org/~esr/
+Source0: %{name}-%{version}.tar.gz
 Copyright: GPL
 Group: Games
 %description
@@ -30,4 +31,4 @@ make install
 %files
 /usr/share/man/man6/blue.6
 /usr/bin/blue
-%doc README COPYING
+%doc READ.ME COPYING
