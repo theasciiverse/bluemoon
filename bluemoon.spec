@@ -6,6 +6,8 @@ URL: http://www.tuxedo.org/~esr/bluemoon/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
+%undefine __check_files
+
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
 out in four rows.  The aces are then moved to the left end of the layout,
