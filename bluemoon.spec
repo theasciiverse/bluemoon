@@ -30,13 +30,12 @@ make
 %install
 make install
 
-%changelog
-
 %files
 /usr/share/man/man6/bluemoon.6
 /usr/bin/bluemoon
 %doc READ.ME COPYING
 
+%changelog
 * Wed Dec 24 2003 Eric S. Raymond <esr@snark.thyrsus.com> 
 - Fixed build machinery to use rpmbuild.
 
