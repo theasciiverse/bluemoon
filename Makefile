@@ -29,5 +29,5 @@ uninstall:
 
 dist: bluemoon-$(VERS).tar.gz
 
-release: shipper-$(VERS).tar.gz bluemoon.html
+release: bluemoon-$(VERS).tar.gz bluemoon.html
 	shipper -f
