@@ -2,46 +2,20 @@
  *                                                                           *
  *                         B l u e   M o o n                                 *
  *                         =================                                 *
- *                               V2.1                                        *
+ *                               V2.2                                        *
  *                   A patience game by T.A.Lister                           *
  *            Integral screen support by Eric S. Raymond                     *
  *                                                                           *
  *****************************************************************************/
 
 /*
- * Compile this with the command `cc -O blue.c -ltermcap -o blue`. You might
- * have to plug in a different library name for -ltermcap; -lcurses and
- * -ltermlib are common alternatives.
- *
- * If your terminal type has IBMPREFIX as a prefix, this program will assume
- * your terminal can display the IBM card-suit graphics using the strings given
- * here. These strings work with the generic AT&T System V console(7) driver
- * on AT-compatible boxes; if you have something else (like a pre-merge XENIX)
- * they might have to change. This ugly kluge is needed because as of SVr3.2
- * termcap/terminfo doesn't yet have a capability for displaying the `literal'
- * values of control characters.
- *
- * Warning: due to a bug in tgetent() on the 6386WGS (and possibly elsewhere)
- * under SVr3.2, running this program may trash eof, tab3 and possibly other
- * pieces of your tty control info. If this happens, recompile with -DBROKEN.
+ * Compile this with the command `cc -O blue.c -lcurses -o blue'. For best
+ * results, use the portable freeware ncurses(3) library.  On non-Intel
+ * machines, SVr4 curses is just as good.
  */
-#define IBMPREFIX	"AT"
-#define HEART		"\033[11m\003\033[10m"
-#define SPADE		"\033[11m\006\033[10m"
-#define DIAMOND		"\033[11m\004\033[10m"
-#define CLUB		"\033[11m\005\033[10m"
 
 #include <signal.h>
-#include <stdio.h>
-#include <ctype.h>	/* for isdigit() */
-#ifdef BROKEN
-#include <termio.h>
-
-static struct termio savetty;
-#endif /* BROKEN */
-
-extern long time();
-extern char *malloc();
+#include <curses.h>
 
 #define NOCARD		(-1)
 
@@ -62,16 +36,6 @@ extern char *malloc();
 #define BASEROW		1
 #define PROMPTROW	11
 
-/* these are the terminfo indexes for the basic colors it guarantees */
-#define COLOR_BLACK	0
-#define COLOR_BLUE	1
-#define COLOR_GREEN	2
-#define COLOR_CYAN	3
-#define COLOR_RED	4
-#define COLOR_MAGENTA	5
-#define COLOR_YELLOW	6
-#define COLOR_WHITE	7
-
 static int deck_size = PACK_SIZE;	/* initial deck */
 static int deck[PACK_SIZE];
 
@@ -80,184 +44,34 @@ static int freeptr[4];		/* free card space pointers */
 
 static int deal_number=0;
 
-static char *suits[] = {"h", "s", "d", "c" };
+static char *ranks[SUIT_LENGTH] =
+	{" A"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10"," J"," Q"," K"};
 
-/*
- * Here goes the screen support. We don't use terminfo/termcap because of
- * the incredible braindamage they manifest when you try to output control
- * characters -- on IBM-compatible machines this leads to serious lossage.
- *
- * The only functions this code requires from curses(3) are:
- *
- *	cbreak(), nocbreak(), tgetstr(), tgetnum(), tputs(), tparm(), tgoto()
- *
- * so a port to MS-DOS using PC-Curses or some variant thereof ought to be
- * fairly easy.
- */
-
-static int CO, LI;
-static char *HO, *CL, *CM, *CE, *SO, *SE, *VS, *VE, *HI, *HE, *SF, *SB;
-
-/* lowest-level character output */
-
-static void xputc(c)
-char c;
+static chtype letters[] =
 {
-    putchar(c);
-}
+    'h' | COLOR_PAIR(COLOR_RED),	/* hearts */
+    's' | A_REVERSE,			/* spades */
+    'd' | COLOR_PAIR(COLOR_RED),	/* diamonds */
+    'c' | A_REVERSE,			/* clubs */
+};
 
-void xputs(s)
-char *s;
+#if defined(__i386__) && defined(A_PCCHARSET)
+static chtype glyphs[] =
 {
-    tputs(s, 1, (int (*)())xputc);
-}
+    '\003' | A_PCCHARSET | COLOR_PAIR(COLOR_RED),	/* hearts */
+    '\006' | A_PCCHARSET | A_REVERSE,			/* spades */
+    '\004' | A_PCCHARSET | COLOR_PAIR(COLOR_RED),	/* diamonds */
+    '\005' | A_PCCHARSET | A_REVERSE,			/* clubs */
+};
+#endif /* __i386__ && A_PCCHARSET */
 
-static void initscr()
-{
-    extern char *tgetstr();
-    extern char *tparm(), *tgetstr();
-    extern char *getenv();
-    extern int tgetnum();
-    void clear();
-
-    register char *term;
-    register char *tptr;
-    register int i;
-
-    if((term = getenv("TERM")) == (char *)NULL)
-    {
-	(void) fprintf(stderr, "Can't get TERM.\n");
-	exit(1);
-    }
-
-    tptr = malloc(10000);
-    if (tgetent(tptr, term) < 1)
-    {
-	(void) fprintf(stderr, "Unknown terminal type: %s.\n", term);
-	exit(1);
-    }
-
-    HO = tgetstr("ho", (char *)NULL);
-    CO = tgetnum("co");
-    LI = tgetnum("li");
-    if(!(CL = tgetstr("cl", (char *)NULL)) || !(CM = tgetstr("cm", (char *)NULL)))
-    {
-	(void) fprintf(stderr, "Blue needs CL and CM\n");
-	exit(1);
-    }
-    CE = tgetstr("ce", (char *)NULL);
-    SO = tgetstr("so", (char *)NULL);
-    SE = tgetstr("se", (char *)NULL);
-    VS = tgetstr("vs", (char *)NULL);
-    VE = tgetstr("ve", (char *)NULL);
-    HI = tgetstr("hi", (char *)NULL);
-    HE = tgetstr("he", (char *)NULL);
-    SF = SB = "";
-    if (tgetnum("Co") >= 8)
-    {
-	SF = tgetstr("Sf", (char *)NULL);
-	SB = tgetstr("Sb", (char *)NULL);
-    }
-
-    free(tptr);
-
-    if (strncmp(term, IBMPREFIX, sizeof(IBMPREFIX) - 1) == 0)
-    {
-	suits[HEARTS] = HEART;
-	suits[SPADES] = SPADE;
-	suits[DIAMONDS] = DIAMOND;
-	suits[CLUBS] = CLUB;
-    }
-
-    tputs(VS);
-}
-
-static void endwin()
-{
-    xputs(VE);
-}
-
-/* Cursor movements */
-
-static void home()
-{
-    if(HO)
-	xputs(HO);
-    else
-	xputs(tgoto(CM, 0, 0));
-}
-
-static void clear()
-{
-    xputs(CL);
-    home();
-}
-
-static void clrtoeol()
-{
-    xputs(CE);
-}
-
-static void refresh()
-{
-    (void) fflush(stdout);
-}
-
-static void move(y, x)
-register int y, x;
-{
-    xputs(tgoto(CM, x - 1, y - 1));
-}
-
-static void standout()
-{
-    if(SO) xputs(SO);
-}
-
-static void standend()
-{
-    if(SE) xputs(SE);
-}
-
-static void setfore(color)
-int color;
-{
-    extern char *tparm();
-
-    if (SF)
-	xputs(tparm(SF, color));
-}
-
-static void setback(color)
-int color;
-{
-    extern char *tparm();
-
-    if (SB)
-	xputs(tparm(SB, color));
-}
-
-/*
- * OK, here is the game proper
- */
+static chtype *suits = letters;	/* this may change to glyphs below */
 
 static void die(onsig)
 int onsig;
 {
-    signal(SIGINT, SIG_IGN);
-    setfore(COLOR_WHITE);
-    setback(COLOR_BLACK);
-    if (onsig)
-	clear();
+    signal(onsig, SIG_IGN);
     endwin();
-#ifdef BSD
-    nocrmode();
-#else
-    nocbreak();
-#endif /* BSD */
-#ifdef BROKEN
-    (void) ioctl(0, TCSETA, &savetty);
-#endif /* BROKEN */
     exit(0);
 }
 
@@ -273,18 +87,18 @@ static void init_vars()
 static void shuffle(size)
 int size;
 {
-	int i,j,numswaps,swapnum,temp;
+    int i,j,numswaps,swapnum,temp;
 
-	numswaps=size*10;	/* an arbitrary figure */
+    numswaps=size*10;		/* an arbitrary figure */
 
-	for (swapnum=0;swapnum<numswaps;swapnum++)
-	{
-		i=rand() % size;
-		j=rand() % size;
-		temp=deck[i];
-		deck[i]=deck[j];
-		deck[j]=temp;
-	}
+    for (swapnum=0;swapnum<numswaps;swapnum++)
+    {
+	i=rand() % size;
+	j=rand() % size;
+	temp=deck[i];
+	deck[i]=deck[j];
+	deck[j]=temp;
+    }
 }
 
 static void deal_cards()
@@ -318,23 +132,16 @@ static void deal_cards()
 static void printcard(value)
 int value;
 {
-    static char *ranks[SUIT_LENGTH] =
-	{" A"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10"," J"," Q"," K"};
-
-    (void)putchar(' ');
+    (void) addch(' ');
     if (value == NOCARD)
-	(void)printf("   ");
+	(void) addstr("   ");
     else
     {
-	setback(COLOR_WHITE);
-	setfore(COLOR_BLUE);
-	xputs(ranks[value % SUIT_LENGTH]);
-	setfore((value / SUIT_LENGTH) % 2 ? COLOR_BLACK : COLOR_RED);
-	xputs(suits[value / SUIT_LENGTH]);
-	setfore(COLOR_WHITE);
-	setback(COLOR_BLACK);
+	addch(ranks[value % SUIT_LENGTH][0] | COLOR_PAIR(COLOR_BLUE));
+	addch(ranks[value % SUIT_LENGTH][1] | COLOR_PAIR(COLOR_BLUE));
+	addch(suits[value / SUIT_LENGTH]);
     }
-    (void)putchar(' ');
+    (void) addch(' ');
 }
 
 static void display_cards(deal)
@@ -343,7 +150,7 @@ int deal;
     int row, card;
 
     clear();
-    (void)printf(
+    (void)printw(
 		 "Blue Moon 2.1 - by Tim Lister & Eric Raymond - Deal %d.\n",
 		 deal);
     for(row=HEARTS;row<=CLUBS;row++)
@@ -354,7 +161,7 @@ int deal;
     }
 
     move(PROMPTROW + 2, 0); refresh();
-#define P(x)	(void)printf("%s\n", x)
+#define P(x)	(void)printw("%s\n", x)
 P("   This 52-card solitaire starts with  the entire deck shuffled and dealt");
 P("out in four rows.  The aces are then moved to the left end of the layout,");
 P("making 4 initial free spaces.  You may move to a space only the card that");
@@ -428,9 +235,9 @@ static void play_game()
 	    {
 		if (select[i] != NOCARD)
 		{
-		    move( BASEROW + (select[i] / GRID_WIDTH)*2+3,
-			 (select[i] % GRID_WIDTH)*5);
-		    (void)printf("   %c ", *lp++ = 'a' + i);
+		    move(BASEROW + (select[i] / GRID_WIDTH)*2+3,
+			 (select[i] % GRID_WIDTH)*5 - 1);
+		    (void)printw("   %c ", *lp++ = 'a' + i);
 		}
 	    };
 	    *lp = '\0';
@@ -438,7 +245,7 @@ static void play_game()
 	    if (strlen(live) == 1)
 	    {
 		move(PROMPTROW,0);
-		(void)printf(
+		(void)printw(
 		    "Making forced moves...                                 ");
 		(void) fflush(stdout);
 		(void) sleep(1);
@@ -454,12 +261,12 @@ static void play_game()
 
 		do {
 		    move(PROMPTROW,0);
-		    (void) fputs(buf, stdout);
+		    (void) addstr(buf);
 		    move(PROMPTROW, strlen(buf));
 		    clrtoeol();
-		    (void) putchar(' ');
+		    (void) addch(' ');
 		} while
-		    (((c = getchar())<'a' || c>'d') && (c!='r') && (c!='q'));
+		    (((c = getch())<'a' || c>'d') && (c!='r') && (c!='q'));
 	    }
 
 	    for (j = 0; j < 4; j++)
@@ -467,7 +274,7 @@ static void play_game()
 		{
 		    move(BASEROW + (select[j] / GRID_WIDTH)*2+3,
 			 (select[j] % GRID_WIDTH)*5);
-		    (void)printf("     ");
+		    (void)printw("     ");
 		}
 
 	    if (c == 'r')
@@ -478,7 +285,7 @@ static void play_game()
 	    {
 		i = c-'a';
 		if (select[i] == NOCARD)
-		    (void) putchar('\007');
+		    beep();
 		else
 		{
 		    movecard(select[i], freeptr[i]);
@@ -490,9 +297,9 @@ static void play_game()
 
     move(PROMPTROW, 0);
     standout();
-    (void)printf("Finished deal %d - type any character to continue...", deal_number);
+    (void)printw("Finished deal %d - type any character to continue...", deal_number);
     standend();
-    (void) getchar();
+    (void) getch();
 }
 
 static int collect_discards()
@@ -523,35 +330,36 @@ static void game_finished(deal)
 int deal;
 {
     clear();
-    (void)printf("You finished the game in %d deals. This is ",deal);
+    (void)printw("You finished the game in %d deals. This is ",deal);
     standout();
     if (deal<2)
-	(void)printf("excellent");
+	(void)addstr("excellent");
     else if (deal<4)
-	(void)printf("good");
+	(void)addstr("good");
     else if (deal<8)
-	(void)printf("average");
+	(void)addstr("average");
     else
-	(void)printf("poor");
+	(void)addstr("poor");
     standend();
-    (void) printf(".         \n");
-    die(0);
+    (void) addstr(".         ");
+    refresh();
 }
 
 main()
 {
-#ifdef BROKEN
-    (void) ioctl(0, TCGETA, &savetty);
-#endif /* BROKEN */
-
-    signal(SIGINT, die);
+    (void) signal(SIGINT, die);
     initscr();
 
-#ifdef BSD
-    crmode();
-#else
+    start_color();
+    init_pair(COLOR_RED,     COLOR_RED,   COLOR_WHITE);
+    init_pair(COLOR_BLUE,    COLOR_BLUE,  COLOR_WHITE);
+
+#if defined(__i386__) && defined(A_PCCHARSET)
+    if (tigetstr("smpch"))
+	suits = glyphs;
+#endif /* __i386__ && A_PCCHARSET */
+
     cbreak();
-#endif /* BSD */
 
     srand((int)time((long *)0));
 
@@ -568,6 +376,8 @@ main()
 	((deck_size=collect_discards()) != 0);
 
     game_finished(deal_number);
+
+    die(0);
 }
 
 /* blue.c ends here */
