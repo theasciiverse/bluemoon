@@ -12,6 +12,17 @@
  * Compile this with the command `cc -O blue.c -lcurses -o blue'. For best
  * results, use the portable freeware ncurses(3) library.  On non-Intel
  * machines, SVr4 curses is just as good.
+ *
+ * Upon reading this code, Tim Lister wrote:
+
+> I have come to the conclusion that it looks like a C port of a game
+> I wrote many, many moons ago in GFA BASIC (one of the best versions of
+> BASIC written) for the Atari ST. I am not sure whether I gave a
+> copy of it to anyone and I am at a loss to explain how it
+> managed to find its way onto the Internet. Ah well, may you live
+> in interesting times as the Chinese curse goes...
+
+ *
  */
 
 #include <stdlib.h>
