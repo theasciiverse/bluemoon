@@ -1,27 +1,36 @@
 # Makefile for blue, the Blue Moon solitaire game
 
 # Note: When the version changes, you also have to change
-#  * the name of the containing directory
+#  * the LSM file
 #  * the RPM spec file
-V=2.2
+V=2.4
 
 SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6 blue.lsm *.spec
 
 blue: blue.c
-	cc -O blue.c -lncurses -o blue
+	cc -O -DVERSION=\"$(V)\" blue.c -lncurses -o blue
 
-blue.tar: $(SOURCES)
-	(cd ..; tar -cvf blue-$(V)/blue.tar `echo $(SOURCES) | sed "/\(^\| \)/s// blue-$(V)\//g"`)
-blue.tar.gz: blue.tar
-	gzip -f blue.tar
+blue-$(V).tar.gz: $(SOURCES)
+	@ls $(SOURCES) | sed s:^:blue-$(V)/: >MANIFEST
+	@(cd ..; ln -s blue blue-$(V))
+	(cd ..; tar -czvf blue/blue-$(V).tar.gz `cat blue/MANIFEST`)
+	@(cd ..; rm blue-$(V))
 
 blue.shar: $(SOURCES)
 	shar $(SOURCES) >blue.shar
 
 clean:
-	rm -f blue blue.tar blue.tar.gz blue.shar *~
+	rm -f blue blue.tar blue*.gz blue*.rpm blue.shar *~
 
-rpm: blue.tar.gz
-	cp blue.tar.gz /usr/src/SOURCES/blue-$(V).tar.gz
-	cp blue.spec /usr/src/SPECS/blue-$(V)-1.spec
-	rpm -ba blue-$(V)-1.spec
+dist: blue-$(V).tar.gz
+
+RPMROOT=/usr/src/redhat
+RPM = rpm
+RPMFLAGS = -ba
+rpm: dist
+	cp blue-$(V).tar.gz $(RPMROOT)/SOURCES;
+	cp blue.spec $(RPMROOT)/SPECS
+	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) blue.spec	
+	cp $(RPMROOT)/RPMS/`arch|sed 's/i[4-9]86/i386/'`/blue-$(V)*.rpm .
+	cp $(RPMROOT)/SRPMS/blue-$(V)*.src.rpm .
+

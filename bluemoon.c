@@ -2,7 +2,6 @@
  *                                                                           *
  *                         B l u e   M o o n                                 *
  *                         =================                                 *
- *                               V2.2b                                        *
  *                   A patience game by T.A.Lister                           *
  *            Integral screen support by Eric S. Raymond                     *
  *                                                                           *
@@ -169,8 +168,8 @@ int deal;
 
     clear();
     (void)printw(
-		 "Blue Moon 2.2 - by Tim Lister & Eric Raymond - Deal %d.\n",
-		 deal);
+		 "Blue Moon %s - by Tim Lister & Eric Raymond - Deal %d.\n",
+		 VERSION, deal);
     for(row=HEARTS;row<=CLUBS;row++)
     {
 	move(BASEROW + row + row + 2, 1);
