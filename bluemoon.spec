@@ -15,8 +15,8 @@ make
 %install
 rm -f /usr/bin/blue
 cp blue /usr/bin
-cp blue.6 /usr/man/man1/blue.6
+cp blue.6 /usr/man/man6/blue.6
 
 %files
-/usr/man/man1/blue.6
+/usr/man/man6/blue.6
 /usr/bin/blue
