@@ -5,7 +5,7 @@
 #  * the RPM spec file
 V=2.6
 
-SOURCES = READ.ME Makefile blue.c blue.c.orig blue.sgml blue.lsm *.spec
+SOURCES = READ.ME Makefile blue.c blue.sgml blue.lsm *.spec
 CFLAGS=-O
 
 blue: blue.c
