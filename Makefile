@@ -3,14 +3,16 @@
 # Note: When the version changes, you also have to change
 #  * the LSM file
 #  * the RPM spec file
-V=2.4
+V=2.5
 
-SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6 blue.lsm *.spec
-
+SOURCES = READ.ME Makefile blue.c blue.c.orig blue.sgml blue.lsm *.spec
 CFLAGS=-O
 
 blue: blue.c
 	cc $(CFLAGS) -DVERSION=\"$(V)\" blue.c -lncurses -o blue
+
+blue.6: blue.sgml
+	docbook2man blue.sgml
 
 blue-$(V).tar.gz: $(SOURCES)
 	@ls $(SOURCES) | sed s:^:blue-$(V)/: >MANIFEST
@@ -18,11 +20,15 @@ blue-$(V).tar.gz: $(SOURCES)
 	(cd ..; tar -czvf blue/blue-$(V).tar.gz `cat blue/MANIFEST`)
 	@(cd ..; rm blue-$(V))
 
-blue.shar: $(SOURCES)
-	shar $(SOURCES) >blue.shar
-
 clean:
-	rm -f blue blue.tar blue*.gz blue*.rpm blue.shar *~
+	rm -f blue blue.6 blue.tar blue*.gz blue*.rpm blue.shar *~
+
+install: blue.6 uninstall
+	cp blue /usr/bin
+	cp blue.6 /usr/share/man/man6/blue.6
+
+uninstall:
+	rm -f /usr/bin/blue /usr/share/man/man6/blue.6
 
 dist: blue-$(V).tar.gz
 

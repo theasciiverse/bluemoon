@@ -1,8 +1,8 @@
 Name: blue
 Summary: Blue Moon solitaire (text mode)
-Version: 2.4
+Version: 2.5
 Release: 1
-Source: locke.ccil.org:/pub/esr/blue-2.4.tar.gz
+Source: locke.ccil.org:/pub/esr/blue-2.5.tar.gz
 Copyright: BSD-like
 Group: Games
 %description
@@ -25,10 +25,8 @@ deals. A good score is 1-3 deals, 4-7 is average, 8 or more is poor.
 make
 
 %install
-rm -f /usr/bin/blue
-cp blue /usr/bin
-cp blue.6 /usr/man/man6/blue.6
+make install
 
 %files
-/usr/man/man6/blue.6
+/usr/share/man/man6/blue.6
 /usr/bin/blue

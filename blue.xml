@@ -1,13 +1,13 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
 <refentry id='blue.6'>
 <refmeta>
-<refentrytitle>BLUE</refentrytitle>
+<refentrytitle>blue</refentrytitle>
 <manvolnum>6</manvolnum>
 <refmiscinfo class='date'>Nov 31 1994</refmiscinfo>
 </refmeta>
 <refnamediv id='name'>
 <refname>blue</refname>
-<refpurpose>Blue Moon</refpurpose>
+<refpurpose>Blue Moon card solitaire</refpurpose>
 </refnamediv>
 <refsynopsisdiv id='synopsis'>
 
@@ -42,8 +42,8 @@ poor.  </para>
 <para>Originally written by Tim Lister.  Visual user interface and
 color support by Eric S. Raymond &lt;esr@snark.thyrsus.com&gt;. The
 ncurses version was written in November 1994.  See <ulink
-url='http://www.ccil.org/'>http://www.ccil.org/~esr/</ulink>
-for updates, also other software and resources by ESR.</para>
+url='http://www.ccil.org/~esr/'>http://www.ccil.org/~esr/</ulink> for
+updates, also other software and resources by ESR.</para>
 
 </refsect1>
 </refentry>
