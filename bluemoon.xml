@@ -2,20 +2,20 @@
 <!DOCTYPE refentry PUBLIC 
    "-//OASIS//DTD DocBook XML V4.1.2//EN"
    "docbook/docbookx.dtd">
-<refentry id='blue.6'>
+<refentry id='bluemoon.6'>
 <refmeta>
-<refentrytitle>blue</refentrytitle>
+<refentrytitle>bluemoon</refentrytitle>
 <manvolnum>6</manvolnum>
 <refmiscinfo class='date'>Nov 31 1994</refmiscinfo>
 </refmeta>
 <refnamediv id='name'>
-<refname>blue</refname>
+<refname>bluemoon</refname>
 <refpurpose>Blue Moon card solitaire</refpurpose>
 </refnamediv>
 <refsynopsisdiv id='synopsis'>
 
 <cmdsynopsis>
-  <command>blue</command>
+  <command>bluemoon</command>
 </cmdsynopsis>
 
 </refsynopsisdiv>
@@ -43,9 +43,9 @@ poor.  </para>
 <refsect1 id='authors'><title>AUTHORS</title>
 
 <para>Originally written by Tim Lister.  Visual user interface and
-color support by Eric S. Raymond &lt;esr@snark.thyrsus.com&gt;. The
+color support by Eric S. Raymond <email>esr@snark.thyrsus.com</email>. The
 ncurses version was written in November 1994.  See <ulink
-url='http://www.tuxedo.org/~esr/'>http://www.tuxedo.org/~esr/</ulink> for
+url='http://www.catb.org/~esr/'>http://www.catb.org/~esr/</ulink> for
 updates, also other software and resources by ESR.</para>
 
 </refsect1>
