@@ -11,7 +11,7 @@ blue: blue.c
 	cc -O blue.c -lncurses -o blue
 
 blue.tar: $(SOURCES)
-	(cd ..; tar -cvf blue-$(V)/blue.tar `echo $(SOURCES) | sed "/ /s// blue-$(V)\//g"`)
+	(cd ..; tar -cvf blue-$(V)/blue.tar `echo $(SOURCES) | sed "/\(^\| \)/s// blue-$(V)\//g"`)
 blue.tar.gz: blue.tar
 	gzip blue.tar
 
