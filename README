@@ -9,6 +9,7 @@ READ.ME		-- this file
 Makefile	-- how to build it
 blue.c		-- my spiffy ncurses version
 blue.c.orig	-- Tim Lister's original, for comparison purposes
+blue.xml	-- DocBook RefEntry source of the manual page
 blue.6		-- a brief manual page
 
 					Eric S. Raymond
