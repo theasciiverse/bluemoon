@@ -1,36 +1,36 @@
-# Makefile for blue, the Blue Moon solitaire game
+# Makefile for bluemoon, the Blue Moon solitaire game
 
 VERS=2.7
 
-SOURCES = READ.ME COPYING Makefile blue.c blue.xml *.spec
+SOURCES = READ.ME COPYING Makefile bluemoon.c bluemoon.xml *.spec
 CFLAGS=-O
 
-blue: blue.c
-	cc $(CFLAGS) -DRELEASE=\"$(VERS)\" blue.c -lncurses -o blue
+bluemoon: bluemoon.c
+	cc $(CFLAGS) -DRELEASE=\"$(VERS)\" bluemoon.c -lncurses -o bluemoon
 
-blue.6: blue.xml
-	xmlto man blue.xml
+bluemoon.6: bluemoon.xml
+	xmlto man bluemoon.xml
 
-blue-$(VERS).tar.gz: $(SOURCES) blue.6
-	@ls $(SOURCES) blue.6 | sed s:^:blue-$(VERS)/: >MANIFEST
-	@(cd ..; ln -s blue blue-$(VERS))
-	(cd ..; tar -czvf blue/blue-$(VERS).tar.gz `cat blue/MANIFEST`)
-	@(cd ..; rm blue-$(VERS))
+bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
+	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERS)/: >MANIFEST
+	@(cd ..; ln -s bluemoon bluemoon-$(VERS))
+	(cd ..; tar -czvf bluemoon/bluemoon-$(VERS).tar.gz `cat bluemoon/MANIFEST`)
+	@(cd ..; rm bluemoon-$(VERS))
 
 clean:
-	rm -f blue blue.tar blue*.gz blue*.rpm blue.6 *~
+	rm -f bluemoon bluemoon.tar bluemoon*.gz bluemoon*.rpm bluemoon.6 *~
 
-install: blue.6 uninstall
-	cp blue /usr/bin
-	cp blue.6 /usr/share/man/man6/blue.6
+install: bluemoon.6 uninstall
+	cp bluemoon /usr/bin
+	cp bluemoon.6 /usr/share/man/man6/bluemoon.6
 
 uninstall:
-	rm -f /usr/bin/blue /usr/share/man/man6/blue.6
+	rm -f /usr/bin/bluemoon /usr/share/man/man6/bluemoon.6
 
-dist: blue-$(VERS).tar.gz
+dist: bluemoon-$(VERS).tar.gz
 
 RPMROOT=/usr/src/redhat
 rpm: dist
-	rpmbuild --define 'myversion $(VERS)' -ta blue-$(VERS).tar.gz
-	cp $(RPMROOT)/RPMS/*/blue-$(VERS)*.rpm .
-	cp $(RPMROOT)/SRPMS/blue-$(VERS)*.src.rpm .
+	rpmbuild --define 'myversion $(VERS)' -ta bluemoon-$(VERS).tar.gz
+	cp $(RPMROOT)/RPMS/*/bluemoon-$(VERS)*.rpm .
+	cp $(RPMROOT)/SRPMS/bluemoon-$(VERS)*.src.rpm .
