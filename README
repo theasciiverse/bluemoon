@@ -11,6 +11,9 @@ blue.c		-- my spiffy ncurses version
 blue.xml	-- DocBook RefEntry source of the manual page
 blue.6		-- a brief manual page
 
+Changes since the initial release have been in the packaging.  Please don't
+hack blue.6, enhance the XML masters instead.
+
 					Eric S. Raymond
 					esr@thyrsus.com
 				(WWW: http://www.tuxedo.org/~esr/)
