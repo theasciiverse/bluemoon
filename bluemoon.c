@@ -22,6 +22,9 @@
 > in interesting times as the Chinese curse goes...
 
  *
+ * Debugging note:  The command `x' causes the game to terminate and write 
+ * a line consisting of the token `blue' followed by the random-number
+ * seed used for the game, followed by a list of the moves.
  */
 
 #include <stdlib.h>
@@ -50,6 +53,9 @@
 
 #define BASEROW		1
 #define PROMPTROW	11
+
+static int seed, nmove;
+static char journal[PACK_SIZE];
 
 static int deck_size = PACK_SIZE;	/* initial deck */
 static int deck[PACK_SIZE];
@@ -87,6 +93,8 @@ int onsig;
 {
     signal(onsig, SIG_IGN);
     endwin();
+    if (seed)
+	printf("blue %d %s\n", seed, journal);
     exit(0);
 }
 
@@ -228,6 +236,8 @@ static void play_game()
     char c;
     int select[4], card;
 
+    nmove = 0;
+    memset(journal, '\0', sizeof(journal));
     while (dead<4)
     {
 	dead=0;
@@ -285,7 +295,7 @@ static void play_game()
 		    clrtoeol();
 		    (void) addch(' ');
 		} while
-		    (((c = getch())<'a' || c>'d') && (c!='r') && (c!='q'));
+		    (!(c = getch()) || !strchr("abcdqrx", c));
 	    }
 
 	    for (j = 0; j < 4; j++)
@@ -297,9 +307,17 @@ static void play_game()
 		}
 
 	    if (c == 'r')
+	    {
+		clearok(stdscr, TRUE);
 		display_cards(deal_number);
-	    else if (c == 'q')
+	    }
+	    else if (c == 'x')
 		die(0);
+	    else if (c == 'q')
+	    {
+		seed = 0;
+		die(0);
+	    }
 	    else
 	    {
 		i = c-'a';
@@ -311,6 +329,7 @@ static void play_game()
 		    freeptr[i]=select[i];
 		}
 	    }
+	    journal[nmove++] = c;
 	}
     }
 
@@ -385,9 +404,9 @@ main(int argc, char *argv[])
     cbreak();
 
     if (argc == 2)
-	srand(atoi(argv[1]));
+	srand(seed = atoi(argv[1]));
     else
-	srand((int)time((long *)0));
+	srand(seed = (int)time((long *)0));
 
     init_vars();
 
