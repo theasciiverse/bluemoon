@@ -1,8 +1,8 @@
 # Makefile for bluemoon, the Blue Moon solitaire game
 
-VERS=2.7
+VERS=$(shell sed <bluemoon.spec -n -e '/Version: \(.*\)/s//\1/p')
 
-SOURCES = READ.ME COPYING Makefile bluemoon.c bluemoon.xml *.spec
+SOURCES = README COPYING Makefile bluemoon.c bluemoon.xml *.spec
 CFLAGS=-O
 
 bluemoon: bluemoon.c
@@ -28,9 +28,3 @@ uninstall:
 	rm -f /usr/bin/bluemoon /usr/share/man/man6/bluemoon.6
 
 dist: bluemoon-$(VERS).tar.gz
-
-RPMROOT=/usr/src/redhat
-rpm: dist
-	rpmbuild --define 'myversion $(VERS)' -ta bluemoon-$(VERS).tar.gz
-	cp $(RPMROOT)/RPMS/*/bluemoon-$(VERS)*.rpm .
-	cp $(RPMROOT)/SRPMS/bluemoon-$(VERS)*.src.rpm .

@@ -1,12 +1,12 @@
 Name: bluemoon
 Summary: Blue Moon solitaire (text mode)
-Version: %{myversion}
+Version: 2.8
 Release: 1
 URL: http://www.catb.org/~esr/bluemoon/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
-%undefine __check_files
+BuildRoot: %{_tmppath}/%{name}-root
 
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
@@ -22,20 +22,31 @@ followed by a space, followed by enough cards to make a row of 14.
 deals. A good score is 1-3 deals, 4-7 is average, 8 or more is poor.
 
 %prep
-%setup
+%setup -q
 
 %build
 make
+make bluemoon.6
 
 %install
-make install
+[ ! -z "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
+mkdir -p "$RPM_BUILD_ROOT"/usr/bin
+mkdir -p "$RPM_BUILD_ROOT"/usr/share/man/man6/
+cp bluemoon "$RPM_BUILD_ROOT"/usr/bin
+cp bluemoon.6 "$RPM_BUILD_ROOT"/usr/share/man/man6/
 
+%clean
+[ ! -z "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
 %files
-/usr/share/man/man6/bluemoon.6
-/usr/bin/bluemoon
-%doc READ.ME COPYING
+%defattr(-,root,root,-)
+%{_mandir}/man6/bluemoon.6*
+%{_bindir}/bluemoon
+%doc README COPYING
 
 %changelog
-* Wed Dec 24 2003 Eric S. Raymond <esr@snark.thyrsus.com> 
+* Mon Dec 29 2003 Eric S. Raymond <esr@snark.thyrsus.com> 2.8-1
+- Source RPMs no longer require --define myversion.
+
+* Wed Dec 24 2003 Eric S. Raymond <esr@snark.thyrsus.com> 2.7-1
 - Fixed build machinery to use rpmbuild.
 
