@@ -3,7 +3,7 @@
 # Note: When the version changes, you also have to change
 #  * the LSM file
 #  * the RPM spec file
-V=2.5
+V=2.6
 
 SOURCES = READ.ME Makefile blue.c blue.c.orig blue.sgml blue.lsm *.spec
 CFLAGS=-O
