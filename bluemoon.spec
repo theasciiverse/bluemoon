@@ -3,7 +3,7 @@ Summary: Blue Moon solitaire (text mode)
 Version: 2.6
 Release: 1
 Source: http://www.tuxedo.org/~esr/
-Copyright: BSD-like
+Copyright: GPL
 Group: Games
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
