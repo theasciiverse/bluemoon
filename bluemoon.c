@@ -50,18 +50,18 @@ static char *ranks[SUIT_LENGTH] =
 static chtype letters[] =
 {
     'h' | COLOR_PAIR(COLOR_RED),	/* hearts */
-    's' | A_REVERSE,			/* spades */
+    's' | COLOR_PAIR(COLOR_GREEN),	/* spades */
     'd' | COLOR_PAIR(COLOR_RED),	/* diamonds */
-    'c' | A_REVERSE,			/* clubs */
+    'c' | COLOR_PAIR(COLOR_GREEN),	/* clubs */
 };
 
 #if defined(__i386__) && defined(A_PCCHARSET)
 static chtype glyphs[] =
 {
     '\003' | A_PCCHARSET | COLOR_PAIR(COLOR_RED),	/* hearts */
-    '\006' | A_PCCHARSET | A_REVERSE,			/* spades */
+    '\006' | A_PCCHARSET | COLOR_PAIR(COLOR_GREEN),	/* spades */
     '\004' | A_PCCHARSET | COLOR_PAIR(COLOR_RED),	/* diamonds */
-    '\005' | A_PCCHARSET | A_REVERSE,			/* clubs */
+    '\005' | A_PCCHARSET | COLOR_PAIR(COLOR_GREEN),	/* clubs */
 };
 #endif /* __i386__ && A_PCCHARSET */
 
@@ -184,9 +184,11 @@ int card;
 {
     int i;
 
-    if ((card<0)||(card>=PACK_SIZE))	return NOCARD;
-    for(i=0;i<GRID_LENGTH;i++)
-	if (grid[i]==card)		return i;
+    if ((card<0) || (card>=PACK_SIZE))
+	return(NOCARD);
+    for(i = 0; i < GRID_LENGTH; i++)
+	if (grid[i] == card)
+	    return i;
     return(NOCARD);
 }
 
@@ -347,14 +349,18 @@ int deal;
     refresh();
 }
 
-main()
+main(int argc, char *argv[])
 {
     (void) signal(SIGINT, die);
     initscr();
 
+    /*
+     * We use COLOR_GREEN because COLOR_BLACK is wired to the wrong thing.
+     */
     start_color();
     init_pair(COLOR_RED,     COLOR_RED,   COLOR_WHITE);
     init_pair(COLOR_BLUE,    COLOR_BLUE,  COLOR_WHITE);
+    init_pair(COLOR_GREEN,   COLOR_BLACK, COLOR_WHITE);
 
 #if defined(__i386__) && defined(A_PCCHARSET)
     if (tigetstr("smpch"))
@@ -363,7 +369,10 @@ main()
 
     cbreak();
 
-    srand((int)time((long *)0));
+    if (argc == 2)
+	srand(atoi(argv[1]));
+    else
+	srand((int)time((long *)0));
 
     init_vars();
 
