@@ -4,7 +4,7 @@ Version: 2.6
 Release: 1
 URL: http://www.tuxedo.org/~esr/
 Source0: %{name}-%{version}.tar.gz
-Copyright: GPL
+License: GPL
 Group: Games
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
