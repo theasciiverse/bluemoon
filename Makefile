@@ -1,7 +1,6 @@
 # Makefile for blue, the Blue Moon solitaire game
 
-# Note: When the version changes, you also have to change the RPM spec file
-VERS=2.6
+VERS=2.7
 
 SOURCES = READ.ME COPYING Makefile blue.c blue.xml *.spec
 CFLAGS=-O
@@ -31,11 +30,7 @@ uninstall:
 dist: blue-$(VERS).tar.gz
 
 RPMROOT=/usr/src/redhat
-RPM = rpm
-RPMFLAGS = -ba
 rpm: dist
-	cp blue-$(VERS).tar.gz $(RPMROOT)/SOURCES;
-	cp blue.spec $(RPMROOT)/SPECS
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) blue.spec	
-	cp $(RPMROOT)/RPMS/`arch|sed 's/i[4-9]86/i386/'`/blue-$(VERS)*.rpm .
+	rpmbuild --define 'myversion $(VERS)' -ta blue-$(VERS).tar.gz
+	cp $(RPMROOT)/RPMS/*/blue-$(VERS)*.rpm .
 	cp $(RPMROOT)/SRPMS/blue-$(VERS)*.src.rpm .

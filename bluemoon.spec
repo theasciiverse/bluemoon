@@ -1,8 +1,8 @@
 Name: blue
 Summary: Blue Moon solitaire (text mode)
-Version: 2.6
+Version: %{myversion}
 Release: 1
-URL: http://www.tuxedo.org/~esr/
+URL: http://www.tuxedo.org/~esr/blue/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
@@ -27,6 +27,11 @@ make
 
 %install
 make install
+
+%changelog
+
+* Wed Dec 24 2003 Eric S. Raymond <esr@snark.thyrsus.com> 
+- Fixed build machinery to use rpmbuild.
 
 %files
 /usr/share/man/man6/blue.6
