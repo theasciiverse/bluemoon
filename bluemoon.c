@@ -158,7 +158,7 @@ int deal;
 
     clear();
     (void)printw(
-		 "Blue Moon 2.1 - by Tim Lister & Eric Raymond - Deal %d.\n",
+		 "Blue Moon 2.2 - by Tim Lister & Eric Raymond - Deal %d.\n",
 		 deal);
     for(row=HEARTS;row<=CLUBS;row++)
     {
