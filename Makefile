@@ -13,7 +13,7 @@ blue: blue.c
 blue.tar: $(SOURCES)
 	(cd ..; tar -cvf blue-$(V)/blue.tar `echo $(SOURCES) | sed "/\(^\| \)/s// blue-$(V)\//g"`)
 blue.tar.gz: blue.tar
-	gzip blue.tar
+	gzip -f blue.tar
 
 blue.shar: $(SOURCES)
 	shar $(SOURCES) >blue.shar
