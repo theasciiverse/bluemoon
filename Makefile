@@ -21,7 +21,8 @@ blue-$(V).tar.gz: $(SOURCES)
 	@(cd ..; rm blue-$(V))
 
 clean:
-	rm -f blue blue.6 blue.tar blue*.gz blue*.rpm blue.shar *~
+	rm -f blue blue.tar blue*.gz blue*.rpm blue.shar *~
+	rm -f blue.6 manpage.links manpage.refs
 
 install: blue.6 uninstall
 	cp blue /usr/bin
