@@ -1,6 +1,6 @@
 # Makefile for blue, the Blue Moon solitaire game
 
-SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6
+SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6 blue.lsm
 
 blue: blue.c
 	cc -O blue.c -lcurses -o blue
