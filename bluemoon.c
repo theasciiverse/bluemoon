@@ -79,9 +79,11 @@ static void init_vars()
 {
     int i;
 
-    deck_size=PACK_SIZE;
-    for(i=0;i<PACK_SIZE;i++)	deck[i]=i;
-    for(i=0;i<4;i++)		freeptr[i]=i * GRID_WIDTH;
+    deck_size = PACK_SIZE;
+    for (i=0; i < PACK_SIZE; i++)
+	deck[i]=i;
+    for (i = 0; i < 4; i++)
+	freeptr[i]=i * GRID_WIDTH;
 }
 
 static void shuffle(size)
@@ -155,7 +157,7 @@ int deal;
 		 deal);
     for(row=HEARTS;row<=CLUBS;row++)
     {
-	move(BASEROW + row + row + 2, 0);
+	move(BASEROW + row + row + 2, 1);
 	for(card=0;card<GRID_WIDTH;card++)
 	    printcard(grid[row * GRID_WIDTH + card]);
     }
@@ -185,7 +187,7 @@ int card;
     if ((card<0)||(card>=PACK_SIZE))	return NOCARD;
     for(i=0;i<GRID_LENGTH;i++)
 	if (grid[i]==card)		return i;
-    return NOCARD;
+    return(NOCARD);
 }
 
 static void movecard(src, dst)
@@ -227,7 +229,7 @@ static void play_game()
 		dead++;
 	};
 
-	if (dead<4)
+	if (dead < 4)
 	{
 	    char	live[NSUITS], *lp = live;
 
@@ -236,7 +238,7 @@ static void play_game()
 		if (select[i] != NOCARD)
 		{
 		    move(BASEROW + (select[i] / GRID_WIDTH)*2+3,
-			 (select[i] % GRID_WIDTH)*5 - 1);
+			 (select[i] % GRID_WIDTH)*5);
 		    (void)printw("   %c ", *lp++ = 'a' + i);
 		}
 	    };
@@ -247,7 +249,7 @@ static void play_game()
 		move(PROMPTROW,0);
 		(void)printw(
 		    "Making forced moves...                                 ");
-		(void) fflush(stdout);
+		refresh();
 		(void) sleep(1);
 		c = live[0];
 	    }
@@ -256,7 +258,7 @@ static void play_game()
 		char	buf[BUFSIZ];
 
 		(void)sprintf(buf,
-			"Type [%s] to move, r to redraw, q or DEL to quit: ",
+			"Type [%s] to move, r to redraw, q or INTR to quit: ",
 			live);
 
 		do {
