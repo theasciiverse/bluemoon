@@ -1,12 +1,14 @@
 Name: bluemoon
-Summary: Blue Moon solitaire (text mode)
-Version: 2.8
+Summary: Blue Moon solitaire (curses interface)
+Version: 2.9
 Release: 1
 URL: http://www.catb.org/~esr/bluemoon/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
 BuildRoot: %{_tmppath}/%{name}-root
+#Keywords: blue moon, card, solitaire, game
+#Freshmeat-Name: bluemoon-game
 
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
@@ -25,18 +27,17 @@ deals. A good score is 1-3 deals, 4-7 is average, 8 or more is poor.
 %setup -q
 
 %build
-make
-make bluemoon.6
+make %{?_smp_mflags} bluemoon bluemoon.6
 
 %install
-[ ! -z "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
-mkdir -p "$RPM_BUILD_ROOT"/usr/bin
-mkdir -p "$RPM_BUILD_ROOT"/usr/share/man/man6/
-cp bluemoon "$RPM_BUILD_ROOT"/usr/bin
-cp bluemoon.6 "$RPM_BUILD_ROOT"/usr/share/man/man6/
+[ "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
+mkdir -p "$RPM_BUILD_ROOT"%{_bindir}
+mkdir -p "$RPM_BUILD_ROOT"%{_mandir}/man6/
+cp bluemoon "$RPM_BUILD_ROOT"%{_bindir}
+cp bluemoon.6 "$RPM_BUILD_ROOT"%{_mandir}/man6/
 
 %clean
-[ ! -z "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
+[ "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf "$RPM_BUILD_ROOT"
 %files
 %defattr(-,root,root,-)
 %{_mandir}/man6/bluemoon.6*
@@ -44,6 +45,9 @@ cp bluemoon.6 "$RPM_BUILD_ROOT"/usr/share/man/man6/
 %doc README COPYING
 
 %changelog
+* Sun Jan 11 2004 Eric S. Raymond <esr@snark.thyrsus.com> 2.9-1
+- RPM spec file cleanup, new distribution machinery based on shipper.
+
 * Mon Dec 29 2003 Eric S. Raymond <esr@snark.thyrsus.com> 2.8-1
 - Source RPMs no longer require --define myversion.
 
