@@ -3,7 +3,7 @@
 
 This simple game includes complete instructions on the game screen.  It needs
 to be linked with an SVr4-compatible curses.  For best results, use the
-freeware ncurses distributed with Linux.
+ncurses library distributed with Linux.
 
 READ.ME		-- this file
 Makefile	-- how to build it

@@ -11,18 +11,17 @@ CFLAGS=-O
 blue: blue.c
 	cc $(CFLAGS) -DVERSION=\"$(V)\" blue.c -lncurses -o blue
 
-blue.6: blue.sgml
-	docbook2man blue.sgml
+blue.6: blue.xml
+	xmlto man blue.xml
 
-blue-$(V).tar.gz: $(SOURCES)
-	@ls $(SOURCES) | sed s:^:blue-$(V)/: >MANIFEST
+blue-$(V).tar.gz: $(SOURCES) blue.6
+	@ls $(SOURCES) blue.6 | sed s:^:blue-$(V)/: >MANIFEST
 	@(cd ..; ln -s blue blue-$(V))
 	(cd ..; tar -czvf blue/blue-$(V).tar.gz `cat blue/MANIFEST`)
 	@(cd ..; rm blue-$(V))
 
 clean:
-	rm -f blue blue.tar blue*.gz blue*.rpm blue.shar *~
-	rm -f blue.6 manpage.links manpage.refs
+	rm -f blue blue.tar blue*.gz blue*.rpm blue.6 *~
 
 install: blue.6 uninstall
 	cp blue /usr/bin
