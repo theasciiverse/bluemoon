@@ -30,4 +30,4 @@ uninstall:
 dist: bluemoon-$(VERS).tar.gz
 
 release: bluemoon-$(VERS).tar.gz bluemoon.html
-	shipper -f; rm CHANGES ANNOUNCE* bluemoon.html index.html *.rpm *.lsm
+	shipper -f; rm -f CHANGES ANNOUNCE* *.1 *.html *.rpm *.lsm
