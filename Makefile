@@ -28,3 +28,6 @@ uninstall:
 	rm -f /usr/bin/bluemoon /usr/share/man/man6/bluemoon.6
 
 dist: bluemoon-$(VERS).tar.gz
+
+release: shipper-$(VERS).tar.gz bluemoon.html
+	shipper -f
