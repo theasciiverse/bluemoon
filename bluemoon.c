@@ -47,8 +47,8 @@
 #define CLUBS		3
 #define NSUITS		4
 
-#define GRID_WIDTH	14	/*    13+1  */
-#define GRID_LENGTH	56	/* 4*(13+1) */
+#define GRID_WIDTH	(SUIT_LENGTH + 1)
+#define GRID_LENGTH	(NSUITS * GRID_WIDTH)
 #define PACK_SIZE	52
 
 #define BASEROW		1
@@ -234,7 +234,7 @@ static void play_game()
 {
     int dead=0, i, j;
     char c;
-    int select[4], card;
+    int select[NSUITS], card;
 
     nmove = 0;
     memset(journal, '\0', sizeof(journal));
@@ -258,7 +258,7 @@ static void play_game()
 
 	if (dead < 4)
 	{
-	    char	live[NSUITS], *lp = live;
+	    char	live[NSUITS+1], *lp = live;
 
 	    for (i=0;i<4;i++)
 	    {
