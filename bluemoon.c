@@ -2,7 +2,7 @@
  *                                                                           *
  *                         B l u e   M o o n                                 *
  *                         =================                                 *
- *                               V2.2                                        *
+ *                               V2.2b                                        *
  *                   A patience game by T.A.Lister                           *
  *            Integral screen support by Eric S. Raymond                     *
  *                                                                           *
@@ -14,8 +14,13 @@
  * machines, SVr4 curses is just as good.
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <signal.h>
+#include <time.h>
 #include <curses.h>
+#include <term.h>
 
 #define NOCARD		(-1)
 
