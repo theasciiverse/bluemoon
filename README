@@ -1,0 +1,16 @@
+				Blue Moon
+			by Tim Lister and Eric S. Raymond
+
+This simple game includes complete instructions on the game screen.  It needs
+to be linked with an SVr4-compatible curses.  For best results, use the
+freeware ncurses distributed with Linux.
+
+READ.ME		-- this file
+Makefile	-- how to build it
+blue.c		-- my spiffy ncurses version
+blue.c.orig	-- Tim Lister's original, for comparison purposes
+blue.6		-- a brief manual page
+
+					Eric S. Raymond
+					esr@snark.thyrsus.com
+				(WWW: http://www.thyrsus.com/~esr/home.html)
