@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 /*
- * Compile this with the command `cc -O blue.c -lcurses -o blue'. For best
- * results, use the open-source ncurses(3) library.  On non-Intel
+ * Compile this with the command `cc -O bluemoon.c -lcurses -o bluemoon'. 
+ * For best results, use the open-source ncurses(3) library.  On non-Intel
  * machines, SVr4 curses is just as good.
  *
  * Upon reading this code, Tim Lister wrote:
@@ -94,7 +94,7 @@ int onsig;
     signal(onsig, SIG_IGN);
     endwin();
     if (seed)
-	printf("blue %d %s\n", seed, journal);
+	printf("bluemoon %d %s\n", seed, journal);
     exit(0);
 }
 
