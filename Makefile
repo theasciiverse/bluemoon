@@ -1,7 +1,6 @@
 # Makefile for blue, the Blue Moon solitaire game
 
-# Note: When the version changes, you also have to change
-#  * the RPM spec file
+# Note: When the version changes, you also have to change the RPM spec file
 VERS=2.6
 
 SOURCES = READ.ME COPYING Makefile blue.c blue.xml *.spec
@@ -40,5 +39,3 @@ rpm: dist
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) blue.spec	
 	cp $(RPMROOT)/RPMS/`arch|sed 's/i[4-9]86/i386/'`/blue-$(VERS)*.rpm .
 	cp $(RPMROOT)/SRPMS/blue-$(VERS)*.src.rpm .
-
-
