@@ -3,7 +3,7 @@
 SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6
 
 blue: blue.c
-	cc -I/usr/include/ncurses -O blue.c -lncurses -o blue
+	cc -O blue.c -lcurses -o blue
 
 blue.tar: $(SOURCES)
 	tar -cvf blue.tar $(SOURCES)
