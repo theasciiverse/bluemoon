@@ -30,3 +30,4 @@ make install
 %files
 /usr/share/man/man6/blue.6
 /usr/bin/blue
+%doc README COPYING
