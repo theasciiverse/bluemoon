@@ -7,8 +7,10 @@ V=2.4
 
 SOURCES = READ.ME Makefile blue.c blue.c.orig blue.6 blue.lsm *.spec
 
+CFLAGS=-O
+
 blue: blue.c
-	cc -O -DVERSION=\"$(V)\" blue.c -lncurses -o blue
+	cc $(CFLAGS) -DVERSION=\"$(V)\" blue.c -lncurses -o blue
 
 blue-$(V).tar.gz: $(SOURCES)
 	@ls $(SOURCES) | sed s:^:blue-$(V)/: >MANIFEST
