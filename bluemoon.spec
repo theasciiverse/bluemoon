@@ -18,5 +18,5 @@ cp blue /usr/bin
 cp blue.6 /usr/man/man1/blue.6
 
 %files
-%doc /usr/man/man1/blue.6
+/usr/man/man1/blue.6
 /usr/bin/blue
