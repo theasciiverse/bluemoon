@@ -46,7 +46,7 @@ cp bluemoon.6 "$RPM_BUILD_ROOT"%{_mandir}/man6/
 
 %changelog
 * Tue Oct 19 2010 Eric S. Raymond <esr@snark.thyrsus.com> 2.10-1
-  Change license to BSD
+  Change license to BSD. Polish code to full ANSI with prototypes.
 
 * Sun Jan 11 2004 Eric S. Raymond <esr@snark.thyrsus.com> 2.9-1
 - RPM spec file cleanup, new distribution machinery based on shipper.
