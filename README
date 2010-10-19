@@ -5,7 +5,7 @@ This simple game includes complete instructions on the game screen.  It needs
 to be linked with an SVr4-compatible curses.  For best results, use the
 ncurses library distributed with Linux.
 
-READ.ME		-- this file
+README		-- this file
 Makefile	-- how to build it
 bluemoon.c	-- the code
 bluemoon.xml	-- DocBook RefEntry source of the manual page
