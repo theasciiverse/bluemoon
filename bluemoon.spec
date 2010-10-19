@@ -1,13 +1,13 @@
 Name: bluemoon
 Summary: Blue Moon solitaire (curses interface)
-Version: 2.9
+Version: 2.10
 Release: 1
 URL: http://www.catb.org/~esr/bluemoon/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
 BuildRoot: %{_tmppath}/%{name}-root
-#Keywords: blue moon, card, solitaire, game
+#Project-Tags: card, solitaire, game
 #Freshmeat-Name: bluemoon-game
 
 %description
@@ -45,6 +45,9 @@ cp bluemoon.6 "$RPM_BUILD_ROOT"%{_mandir}/man6/
 %doc README COPYING
 
 %changelog
+* Tue Oct 19 2010 Eric S. Raymond <esr@snark.thyrsus.com> 2.10-1
+  Change license to BSD
+
 * Sun Jan 11 2004 Eric S. Raymond <esr@snark.thyrsus.com> 2.9-1
 - RPM spec file cleanup, new distribution machinery based on shipper.
 
