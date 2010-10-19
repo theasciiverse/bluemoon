@@ -8,7 +8,6 @@ License: GPL
 Group: Games
 BuildRoot: %{_tmppath}/%{name}-root
 #Project-Tags: card, solitaire, game
-#Freshmeat-Name: bluemoon-game
 
 %description
    This 52-card solitaire starts with  the entire deck shuffled and dealt
