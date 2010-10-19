@@ -11,6 +11,9 @@ bluemoon: bluemoon.c
 bluemoon.6: bluemoon.xml
 	xmlto man bluemoon.xml
 
+bluemoon.html: bluemoon.xml
+	xmlto html-nochunks bluemoon.xml 
+
 bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERS)/: >MANIFEST
 	@(cd ..; ln -s bluemoon bluemoon-$(VERS))
