@@ -18,7 +18,7 @@ bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 	@(cd ..; rm bluemoon-$(VERS))
 
 clean:
-	rm -f bluemoon bluemoon.tar bluemoon*.gz bluemoon*.rpm bluemoon.6 *~
+	rm -f bluemoon *.tar.gz *.6 *.html *~ SHIPPER.* 
 
 install: bluemoon.6 uninstall
 	cp bluemoon /usr/bin
@@ -30,4 +30,4 @@ uninstall:
 dist: bluemoon-$(VERS).tar.gz
 
 release: bluemoon-$(VERS).tar.gz bluemoon.html
-	shipper -f; rm -f CHANGES ANNOUNCE* *.1 *.html *.rpm *.lsm
+	shipper -t -m; make clean 
