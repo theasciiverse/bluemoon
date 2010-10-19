@@ -33,4 +33,4 @@ uninstall:
 dist: bluemoon-$(VERS).tar.gz
 
 release: bluemoon-$(VERS).tar.gz bluemoon.html
-	shipper -t -m; make clean 
+	shipper -u -m -t; make clean 
