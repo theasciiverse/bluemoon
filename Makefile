@@ -2,7 +2,7 @@
 
 VERS=$(shell sed <bluemoon.spec -n -e '/Version: \(.*\)/s//\1/p')
 
-SOURCES = README COPYING Makefile bluemoon.c bluemoon.xml *.spec
+SOURCES = README COPYING Makefile bluemoon.c bluemoon.xml *.spec bluemoon.png
 CFLAGS=-O
 
 bluemoon: bluemoon.c
@@ -17,7 +17,7 @@ bluemoon.html: bluemoon.xml
 bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERS)/: >MANIFEST
 	@(cd ..; ln -s bluemoon bluemoon-$(VERS))
-	(cd ..; tar -czvf bluemoon/bluemoon-$(VERS).tar.gz `cat bluemoon/MANIFEST`)
+	(cd ..; tar -czf bluemoon/bluemoon-$(VERS).tar.gz `cat bluemoon/MANIFEST`)
 	@(cd ..; rm bluemoon-$(VERS))
 
 clean:
