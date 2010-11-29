@@ -7,6 +7,7 @@ Source0: %{name}-%{version}.tar.gz
 License: GPL
 Group: Games
 BuildRoot: %{_tmppath}/%{name}-root
+#Destinations: freshmeat
 #Project-Tags: card, solitaire, game
 #Freshmeat-Name: bluemoon-game
 #Logo: bluemoon.png
