@@ -1,8 +1,8 @@
 # Makefile for bluemoon, the Blue Moon solitaire game
 
-VERS=$(shell sed <bluemoon.spec -n -e '/Version: \(.*\)/s//\1/p')
+VERS=2.11
 
-SOURCES = README COPYING Makefile bluemoon.c bluemoon.xml *.spec bluemoon.png
+SOURCES = README COPYING NEWS Makefile control bluemoon.c bluemoon.xml bluemoon.png
 CFLAGS=-O
 
 bluemoon: bluemoon.c
