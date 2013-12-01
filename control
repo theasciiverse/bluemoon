@@ -25,7 +25,10 @@ XBS-Freecode-Name: bluemoon-game
 
 Homepage: http://www.catb.org/~esr/bluemoon
 
+XBS-HTML-Target: index.html
+
 XBS-Logo: bluemoon.png
 
-XBS-Project-Tag-List: game, card, solitaire
+XBS-Freecode-Tags: game, card, solitaire
 
+XBS-VC-Tag-Template: %(version)s
