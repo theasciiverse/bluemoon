@@ -2,7 +2,7 @@
 
 VERS=2.11
 
-SOURCES = README COPYING NEWS Makefile control bluemoon.c bluemoon.xml bluemoon.png
+SOURCES = README COPYING NEWS Makefile control bluemoon.c bluemoon.xml bluemoon.png bluemoon.desktop
 CFLAGS=-O
 
 bluemoon: bluemoon.c
@@ -23,6 +23,7 @@ bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
 
+# Note: does not intall the desktop file
 install: bluemoon.6 uninstall
 	cp bluemoon /usr/bin
 	cp bluemoon.6 /usr/share/man/man6/bluemoon.6
