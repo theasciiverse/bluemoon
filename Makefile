@@ -1,6 +1,6 @@
 # Makefile for bluemoon, the Blue Moon solitaire game
 
-VERS=2.11
+VERS=2.12
 
 SOURCES = README COPYING NEWS Makefile control bluemoon.c bluemoon.xml bluemoon.png bluemoon.desktop
 CFLAGS=-O
