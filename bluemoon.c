@@ -376,7 +376,7 @@ static void game_finished(int deal)
     refresh();
 }
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     (void) signal(SIGINT, die);
     initscr();
