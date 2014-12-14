@@ -18,10 +18,10 @@ Description: The Blue Moon card solitaire
 
 XBS-Gitorious-URL: https://gitorious.org/blue-moon
 
-XBS-Ohloh-URL: http://www.ohloh.net/p/blue-moon-solitaire
+XBS-OpenHub-URL: http://www.ohloh.net/p/blue-moon-solitaire
 
 XBS-Destinations: freecode
-XBS-Freecode-Name: bluemoon-game
+#XBS-Freecode-Name: bluemoon-game
 
 Homepage: http://www.catb.org/~esr/bluemoon
 
@@ -29,6 +29,6 @@ XBS-HTML-Target: index.html
 
 XBS-Logo: bluemoon.png
 
-XBS-Freecode-Tags: game, card, solitaire
+#XBS-Freecode-Tags: game, card, solitaire
 
 XBS-VC-Tag-Template: %(version)s
