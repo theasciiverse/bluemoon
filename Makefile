@@ -23,10 +23,17 @@ bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
 
-# Note: does not intall the desktop file
 install: bluemoon.6 uninstall
-	cp bluemoon /usr/bin
-	cp bluemoon.6 /usr/share/man/man6/bluemoon.6
+	install -m 0755 -d $(DESTDIR)/usr/bin
+	install -m 0755 -d $(DESTDIR)/usr/share/man/man6
+	install -m 0755 -d $(DESTDIR)//usr/share/applications/
+	install -m 0755 -d $(DESTDIR)/usr/share/icons/hicolor/48x48/apps/
+	install -m 0755 -d $(DESTDIR)/usr/share/appdata/
+	install -m 0755 bluemoon $(DESTDIR)/usr/bin/bluemoon-catb
+	install -m 0644 bluemoon.6 $(DESTDIR)/usr/share/man/man6/bluemoon-catb.6
+	install -m 0644 bluemoon.desktop $(DESTDIR)/usr/share/applications/
+	install -m 0644 bluemoon.png $(DESTDIR)/usr/share/icons/hicolor/48x48/apps/
+	install -m 0644 bluemoon.xml $(DESTDIR)/usr/share/appdata/
 
 uninstall:
 	rm -f /usr/bin/bluemoon /usr/share/man/man6/bluemoon.6
