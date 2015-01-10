@@ -20,8 +20,7 @@ XBS-Gitorious-URL: https://gitorious.org/blue-moon
 
 XBS-OpenHub-URL: http://www.ohloh.net/p/blue-moon-solitaire
 
-XBS-Destinations: freecode
-#XBS-Freecode-Name: bluemoon-game
+XBS-Destinations: nemysis@gmx.ch
 
 Homepage: http://www.catb.org/~esr/bluemoon
 
