@@ -16,7 +16,9 @@ Description: The Blue Moon card solitaire
    A moment's reflection will show that this game cannot take more than 13
  deals. A good score is 1-3 deals, 4-7 is average, 8 or more is poor.
 
-XBS-Gitorious-URL: https://gitorious.org/blue-moon
+XBS-Repository-URL: http://thyrsus.com/gitweb/?p=bluemoon.git
+
+XBS-Clone-From: git@thyrsus.com:bluemoon
 
 XBS-OpenHub-URL: http://www.ohloh.net/p/blue-moon-solitaire
 
