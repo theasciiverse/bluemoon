@@ -48,3 +48,6 @@ dist: bluemoon-$(VERS).tar.gz
 
 release: bluemoon-$(VERS).tar.gz bluemoon.html
 	shipper version=$(VERS) | sh -e -x
+
+refresh: bluemoon.html
+	shipper -N -w version=$(VERS) | sh -e -x
