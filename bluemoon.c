@@ -25,6 +25,8 @@
  * Debugging note:  The command `x' causes the game to terminate and write 
  * a line consisting of the token `blue' followed by the random-number
  * seed used for the game, followed by a list of the moves.
+ *
+ * SPDX-License-Identifier: BSD-2-clause
  */
 
 #include <stdlib.h>
