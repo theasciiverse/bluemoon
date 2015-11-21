@@ -26,7 +26,7 @@
  * a line consisting of the token `blue' followed by the random-number
  * seed used for the game, followed by a list of the moves.
  *
- * SPDX-License-Identifier: BSD-2-clause
+ * SPDX-License-Identifier: BSD-2-Clause
  */
 
 #include <stdlib.h>
