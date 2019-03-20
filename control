@@ -18,9 +18,7 @@ Description: The Blue Moon card solitaire
 
 XBS-Repository-URL: http://thyrsus.com/gitweb/?p=bluemoon.git
 
-XBS-Developer-Clone: git@thyrsus.com:bluemoon
-
-XBS-Anonymous-Clone: git://thyrsus.com/repositories/bluemoon.git
+XBS-Repository-URL: https://gitlab.com/esr/bluemoon
 
 XBS-OpenHub-URL: http://www.ohloh.net/p/blue-moon-solitaire
 
