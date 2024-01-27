@@ -26,6 +26,9 @@ bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
 
+reflow:
+	@clang-format --style="{IndentWidth: 8, UseTab: ForIndentation}" -i $$(find . -name "*.[ch]")
+
 install: bluemoon.6 uninstall
 	install -m 0755 -d $(DESTDIR)/usr/bin
 	install -m 0755 -d $(DESTDIR)/usr/share/man/man6
