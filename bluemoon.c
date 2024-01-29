@@ -284,7 +284,7 @@ static void play_game(void) {
 				         !strchr("abcdqrx", c));
 			}
 
-			for (j = 0; j < 4; j++)
+			for (j = 0; j < 4; j++) {
 				if (select[j] != NOCARD) {
 					move(BASEROW +
 					         (select[j] / GRID_WIDTH) * 2 +
@@ -292,13 +292,14 @@ static void play_game(void) {
 					     (select[j] % GRID_WIDTH) * 5);
 					(void)printw("     ");
 				}
+			}
 
 			if (c == 'r') {
 				clearok(stdscr, TRUE);
 				display_cards(deal_number);
-			} else if (c == 'x')
+			} else if (c == 'x') {
 				die(0);
-			else if (c == 'q') {
+			} else if (c == 'q') {
 				seed = 0;
 				die(0);
 			} else {
