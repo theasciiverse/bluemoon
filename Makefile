@@ -26,6 +26,9 @@ bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
 
+cppcheck:
+	cppcheck bluemoon.c
+
 reflow:
 	@clang-format --style="{IndentWidth: 8, UseTab: ForIndentation}" -i $$(find . -name "*.[ch]")
 
