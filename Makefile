@@ -1,6 +1,6 @@
 # Makefile for bluemoon, the Blue Moon solitaire game
 
-VERS=2.12
+VERSION=$(shell sed -n <NEWS.adoc '/::/s/^\([0-9][^:]*\).*/\1/p' | head -1)
 
 # In case the name of the installed binary and man page needs to change.
 BLUEMOON_TARGET = bluemoon
@@ -9,7 +9,7 @@ SOURCES = README COPYING NEWS.adoc Makefile control bluemoon.c bluemoon.adoc blu
 CFLAGS=-O
 
 bluemoon: bluemoon.c
-	cc $(CFLAGS) -DRELEASE=\"$(VERS)\" bluemoon.c -lncurses -o bluemoon
+	cc $(CFLAGS) -DRELEASE=\"$(VERSION)\" bluemoon.c -lncurses -o bluemoon
 
 # Note: to suppress the footers with timestamps being generated in HTML,
 # we use "-a nofooter".
@@ -22,11 +22,11 @@ bluemoon: bluemoon.c
 .adoc.html:
 	asciidoctor -D. -a nofooter -a webfonts! $<
 
-bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
-	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERS)/: >MANIFEST
-	@(cd ..; ln -s bluemoon bluemoon-$(VERS))
-	@(cd ..; tar -czf bluemoon/bluemoon-$(VERS).tar.gz `cat bluemoon/MANIFEST`)
-	@(cd ..; rm bluemoon-$(VERS))
+bluemoon-$(VERSION).tar.gz: $(SOURCES) bluemoon.6
+	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERSION)/: >MANIFEST
+	@(cd ..; ln -s bluemoon bluemoon-$(VERSION))
+	@(cd ..; tar -czf bluemoon/bluemoon-$(VERSION).tar.gz `cat bluemoon/MANIFEST`)
+	@(cd ..; rm bluemoon-$(VERSION))
 
 clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
@@ -55,10 +55,13 @@ uninstall:
 	rm -f /usr/share/icons/hicolor/48x48/apps/bluemoon.png
 	rm -f /usr/share/appdata/bluemoon.adoc
 
-dist: bluemoon-$(VERS).tar.gz
+version:
+	@echo $(VERSION)
 
-release: bluemoon-$(VERS).tar.gz bluemoon.html
-	shipper version=$(VERS) | sh -e -x
+dist: bluemoon-$(VERSION).tar.gz
+
+release: bluemoon-$(VERSION).tar.gz bluemoon.html
+	shipper version=$(VERSION) | sh -e -x
 
 refresh: bluemoon.html
-	shipper -N -w version=$(VERS) | sh -e -x
+	shipper -N -w version=$(VERSION) | sh -e -x
