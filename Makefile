@@ -5,17 +5,22 @@ VERS=2.12
 # In case the name of the installed binary and man page needs to change.
 BLUEMOON_TARGET = bluemoon
 
-SOURCES = README COPYING NEWS Makefile control bluemoon.c bluemoon.xml bluemoon.png bluemoon.desktop
+SOURCES = README COPYING NEWS.adoc Makefile control bluemoon.c bluemoon.adoc bluemoon.png bluemoon.desktop
 CFLAGS=-O
 
 bluemoon: bluemoon.c
 	cc $(CFLAGS) -DRELEASE=\"$(VERS)\" bluemoon.c -lncurses -o bluemoon
 
-bluemoon.6: bluemoon.xml
-	xmlto man bluemoon.xml
+# Note: to suppress the footers with timestamps being generated in HTML,
+# we use "-a nofooter".
+# To debug asciidoc problems, you may need to run "xmllint --nonet --noout --valid"
+# on the intermediate XML that throws an error.
+.SUFFIXES: .html .adoc .6
 
-bluemoon.html: bluemoon.xml
-	xmlto html-nochunks bluemoon.xml 
+.adoc.6:
+	asciidoctor -D. -a nofooter -b manpage $<
+.adoc.html:
+	asciidoctor -D. -a nofooter -a webfonts! $<
 
 bluemoon-$(VERS).tar.gz: $(SOURCES) bluemoon.6
 	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERS)/: >MANIFEST
@@ -42,13 +47,13 @@ install: bluemoon.6 uninstall
 	install -m 0644 bluemoon.6 $(DESTDIR)/usr/share/man/man6/$(BLUEMOON_TARGET).6
 	install -m 0644 bluemoon.desktop $(DESTDIR)/usr/share/applications/
 	install -m 0644 bluemoon.png $(DESTDIR)/usr/share/icons/hicolor/48x48/apps/
-	install -m 0644 bluemoon.xml $(DESTDIR)/usr/share/appdata/
+	install -m 0644 bluemoon.adoc $(DESTDIR)/usr/share/appdata/
 
 uninstall:
 	rm -f /usr/bin/$(BLUEMOON_TARGET) /usr/share/man/man6/$(BLUEMOON_TARGET).6
 	rm -f /usr/share/applications/bluemoon.desktop
 	rm -f /usr/share/icons/hicolor/48x48/apps/bluemoon.png
-	rm -f /usr/share/appdata/bluemoon.xml
+	rm -f /usr/share/appdata/bluemoon.adoc
 
 dist: bluemoon-$(VERS).tar.gz
 
