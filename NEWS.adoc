@@ -1,6 +1,6 @@
 = bluemoon project news =
 
-Repository head::
+2.13: 2024-02-07::
   License changed to BSD 2-Clause.
 
 2.12: 2014-05-30::
