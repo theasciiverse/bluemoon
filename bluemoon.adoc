@@ -31,11 +31,11 @@ poor.
 [[authors]]
 == AUTHORS ==
 
-Originally written by Tim Lister.  Visual user interface and
-color support by Eric S. Raymond <esr@snark.thyrsus.com>. The
-ncurses version was written in November 1994.  See <ulink
-http://www.catb.org/~esr/'>http://www.catb.org/~esr/ for
-updates, also other software and resources by ESR.
+Originally written by Tim Lister.  Visual user interface and color
+support by Eric S. Raymond <esr@snark.thyrsus.com>. The ncurses
+version was written in November 1994.  See <ulink
+http://www.catb.org/~esr/ for updates, also other software and
+resources by ESR.
 
 
 // end
