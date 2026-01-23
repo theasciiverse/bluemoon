@@ -53,12 +53,15 @@
 #define GRID_WIDTH (SUIT_LENGTH + 1)
 #define GRID_LENGTH (NSUITS * GRID_WIDTH)
 #define PACK_SIZE 52
+#define MAX_DEALS 13
+#define MAX_MOVES (PACK_SIZE * MAX_DEALS) /* assume <= 52 moves per deal */
 
 #define BASEROW 1
 #define PROMPTROW 11
 
 static int seed, nmove;
-static char journal[PACK_SIZE];
+static char journal[MAX_MOVES + 1];
+static volatile sig_atomic_t got_sigint;
 
 static int deck_size = PACK_SIZE; /* initial deck */
 static int deck[PACK_SIZE];
@@ -90,12 +93,19 @@ static chtype glyphs[] = {
 static chtype *suits = letters; /* this may change to glyphs below */
 
 static void die(int onsig) {
-	signal(onsig, SIG_IGN);
+	if (onsig) {
+		signal(onsig, SIG_IGN);
+	}
 	endwin();
 	if (seed) {
 		printf("bluemoon %d %s\n", seed, journal);
 	}
 	exit(0);
+}
+
+static void on_sigint(int onsig) {
+	(void)onsig;
+	got_sigint = 1;
 }
 
 static void init_vars(void) {
@@ -230,6 +240,10 @@ static void play_game(void) {
 	nmove = 0;
 	memset(journal, '\0', sizeof(journal));
 	while (dead < 4) {
+		if (got_sigint) {
+			seed = 0;
+			die(0);
+		}
 		dead = 0;
 		for (i = 0; i < 4; i++) {
 			card = grid[freeptr[i] - 1];
@@ -268,11 +282,12 @@ static void play_game(void) {
 				c = live[0];
 			} else {
 				char buf[BUFSIZ];
+				int ch;
 
-				(void)sprintf(buf,
-				              "Type [%s] to move, r to redraw, "
-				              "q or INTR to quit: ",
-				              live);
+				(void)snprintf(buf, sizeof(buf),
+				               "Type [%s] to move, r to redraw, "
+				               "q or INTR to quit: ",
+				               live);
 
 				do {
 					move(PROMPTROW, 0);
@@ -280,8 +295,14 @@ static void play_game(void) {
 					move(PROMPTROW, strlen(buf));
 					clrtoeol();
 					(void)addch(' ');
-				} while (!(c = getch()) ||
-				         !strchr("abcdqrx", c));
+					ch = getch();
+					if (got_sigint) {
+						seed = 0;
+						die(0);
+					}
+				} while (ch == ERR || ch < 0 || ch > 255 ||
+				         !strchr("abcdqrx", ch));
+				c = (char)ch;
 			}
 
 			for (j = 0; j < 4; j++) {
@@ -311,7 +332,10 @@ static void play_game(void) {
 					freeptr[i] = select[i];
 				}
 			}
-			journal[nmove++] = c;
+			if (nmove < MAX_MOVES) {
+				journal[nmove++] = c;
+				journal[nmove] = '\0';
+			}
 		}
 	}
 
@@ -364,7 +388,7 @@ static void game_finished(int deal) {
 }
 
 int main(int argc, char *argv[]) {
-	(void)signal(SIGINT, die);
+	(void)signal(SIGINT, on_sigint);
 	initscr();
 
 	/*
@@ -376,8 +400,11 @@ int main(int argc, char *argv[]) {
 	init_pair(COLOR_GREEN, COLOR_BLACK, COLOR_WHITE);
 
 #if defined(__i386__) && defined(A_PCCHARSET)
-	if (tigetstr("smpch")) {
-		suits = glyphs;
+	{
+		char *cap = tigetstr("smpch");
+		if (cap && cap != (char *)-1) {
+			suits = glyphs;
+		}
 	}
 #endif /* __i386__ && A_PCCHARSET */
 
@@ -386,7 +413,7 @@ int main(int argc, char *argv[]) {
 	if (argc == 2) {
 		srand(seed = atoi(argv[1]));
 	} else {
-		srand(seed = (int)time((long *)0));
+		srand(seed = (int)time(NULL));
 	}
 	init_vars();
 

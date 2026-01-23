@@ -1,5 +1,8 @@
 = bluemoon project news =
 
+Repository head::
+  C hardening changes by ChatGPT 5.2.
+
 2.13: 2024-02-07::
   License changed to BSD 2-Clause.
 
