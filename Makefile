@@ -32,7 +32,7 @@ clean:
 	rm -f bluemoon *.tar.gz *.6 *.html *~
 
 cppcheck:
-	cppcheck bluemoon.c
+	@cppcheck --quiet bluemoon.c
 
 reflow:
 	@clang-format --style="{IndentWidth: 8, UseTab: ForIndentation}" -i $$(find . -name "*.[ch]")
