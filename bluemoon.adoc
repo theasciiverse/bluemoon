@@ -31,6 +31,7 @@ poor.
 [[authors]]
 == AUTHORS ==
 
+// spellcheck: add ncurses
 Originally written by Tim Lister.  Visual user interface and color
 support by Eric S. Raymond <esr@snark.thyrsus.com>. The ncurses
 version was written in November 1994.  See http://www.catb.org/~esr/

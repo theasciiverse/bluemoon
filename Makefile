@@ -34,6 +34,9 @@ clean:
 cppcheck:
 	@cppcheck --quiet bluemoon.c
 
+spellcheck:
+	@spellcheck bluemoon.adoc
+
 reflow:
 	@clang-format --style="{IndentWidth: 8, UseTab: ForIndentation}" -i $$(find . -name "*.[ch]")
 
