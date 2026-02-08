@@ -18,6 +18,8 @@ Description: The Blue Moon card solitaire
 
 XBS-Repository-URL: https://gitlab.com/esr/bluemoon
 
+XBS-Packaged-As: bluemoon
+
 XBS-OpenHub-URL: http://www.ohloh.net/p/blue-moon-solitaire
 
 XBS-Destinations: mailto:nemysis@gmx.ch
