@@ -33,3 +33,5 @@ XBS-Logo: bluemoon.png
 #XBS-Freecode-Tags: game, card, solitaire
 
 XBS-VC-Tag-Template: %(version)s
+
+XBS-Validate: make spellcheck

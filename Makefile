@@ -5,7 +5,7 @@ VERSION=$(shell sed -n <NEWS.adoc '/::/s/^\([0-9][^:]*\).*/\1/p' | head -1)
 # In case the name of the installed binary and man page needs to change.
 BLUEMOON_TARGET = bluemoon
 
-SOURCES = README COPYING NEWS.adoc Makefile control bluemoon.c bluemoon.adoc bluemoon.png bluemoon.desktop
+SOURCES = README.adoc COPYING NEWS.adoc Makefile control bluemoon.c bluemoon.adoc bluemoon.png bluemoon.desktop
 CFLAGS=-O
 
 bluemoon: bluemoon.c

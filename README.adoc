@@ -1,18 +1,15 @@
-				Blue Moon
-			by Tim Lister and Eric S. Raymond
+= Blue Moon
+
+A card solitare by Tim Lister and Eric S. Raymond
 
 This simple game includes complete instructions on the game screen.  It needs
 to be linked with an SVr4-compatible curses.  For best results, use the
 ncurses library distributed with Linux.
 
-README		-- this file
-Makefile	-- how to build it
-bluemoon.c	-- the code
-bluemoon.adoc	-- asciidoc source of the manual page
-
 Changes since the initial release have been in the packaging.  Please don't
 hack bluemoon.6, enhance the asciidoc master instead.
 
-					Eric S. Raymond
-					esr@thyrsus.com
-				(WWW: http://www.catb.org/~esr/)
+This code is commonly packaged as "bluemoon".
+
+image:https://repology.org/badge/vertical-allrepos/bluemoon.svg[Repology
+package status]
