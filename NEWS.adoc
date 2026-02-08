@@ -1,6 +1,6 @@
 = bluemoon project news =
 
-Repository head::
+2.14: 2026-02-08::
   C hardening changes by ChatGPT 5.2.
 
 2.13: 2024-02-07::
