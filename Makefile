@@ -76,11 +76,12 @@ uninstall:
 version:
 	@echo $(VERSION)
 
-bluemoon-$(VERSION).tar.gz: $(SOURCES) bluemoon.6
-	@ls $(SOURCES) bluemoon.6 | sed s:^:bluemoon-$(VERSION)/: >MANIFEST
-	@(cd ..; ln -s bluemoon bluemoon-$(VERSION))
-	@(cd ..; tar -czf bluemoon/bluemoon-$(VERSION).tar.gz `cat bluemoon/MANIFEST`)
-	@(cd ..; rm bluemoon-$(VERSION))
+bluemoon-$(VERSION).tar.gz: $(SOURCES)
+	mkdir bluemoon-$(VERSION)
+	cp -r $(SOURCES) bluemoon-$(VERSION)
+	tar -czf bluemoon-$(VERSION).tar.gz bluemoon-$(VERSION)
+	rm -fr bluemoon-$(VERSION)
+	ls -l bluemoon-$(VERSION).tar.gz
 
 dist: bluemoon-$(VERSION).tar.gz
 
