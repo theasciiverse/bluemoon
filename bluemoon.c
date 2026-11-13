@@ -31,12 +31,21 @@
  */
 
 #include <curses.h>
+#include <locale.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef PDCURSES /* PDCurses has no terminfo */
 #include <term.h>
+#endif
 #include <time.h>
 #include <unistd.h>
+#ifdef AV_UTF8_SUITS
+#include <langinfo.h>
+#endif
+#ifdef AV_CENTRE
+#include "centre.h"
+#endif
 
 #define NOCARD (-1)
 
@@ -91,6 +100,13 @@ static chtype glyphs[] = {
 #endif /* __i386__ && A_PCCHARSET */
 
 static chtype *suits = letters; /* this may change to glyphs below */
+
+#ifdef AV_UTF8_SUITS
+/* The suit symbols, drawn when the terminal speaks UTF-8 (needs a wide
+ * curses, so only in builds that ask for it). */
+static const char *utf8_suits[] = {"\u2665", "\u2660", "\u2666", "\u2663"};
+static int use_utf8_suits;
+#endif
 
 static void die(int onsig) {
 	if (onsig) {
@@ -167,7 +183,15 @@ static void printcard(int value) {
 	} else {
 		addch(ranks[value % SUIT_LENGTH][0] | COLOR_PAIR(COLOR_BLUE));
 		addch(ranks[value % SUIT_LENGTH][1] | COLOR_PAIR(COLOR_BLUE));
-		addch(suits[value / SUIT_LENGTH]);
+#ifdef AV_UTF8_SUITS
+		if (use_utf8_suits) {
+			attr_t pair = suits[value / SUIT_LENGTH] & A_COLOR;
+			attron(pair);
+			addstr(utf8_suits[value / SUIT_LENGTH]);
+			attroff(pair);
+		} else
+#endif
+			addch(suits[value / SUIT_LENGTH]);
 	}
 	(void)addch(' ');
 }
@@ -384,12 +408,35 @@ static void game_finished(int deal) {
 	}
 	standend();
 	(void)addstr(".         ");
+	move(2, 0);
+	(void)addstr("Type n for a new game, any other key to quit.");
 	refresh();
+}
+
+/* Wait on the result: true for another game. */
+static int another_game(void) {
+	int ch;
+
+	do {
+		ch = getch();
+		if (got_sigint) {
+			return 0;
+		}
+	} while (ch == ERR
+#ifdef KEY_RESIZE
+	         || ch == KEY_RESIZE
+#endif
+	);
+	return ch == 'n' || ch == 'N';
 }
 
 int main(int argc, char *argv[]) {
 	(void)signal(SIGINT, on_sigint);
+	(void)setlocale(LC_ALL, "");
 	initscr();
+#ifdef AV_CENTRE
+	av_centre_start();
+#endif
 
 	/*
 	 * We use COLOR_GREEN because COLOR_BLACK is wired to the wrong thing.
@@ -408,24 +455,40 @@ int main(int argc, char *argv[]) {
 	}
 #endif /* __i386__ && A_PCCHARSET */
 
+#ifdef AV_UTF8_SUITS
+	{
+		const char *cs = nl_langinfo(CODESET);
+		use_utf8_suits = cs && strcmp(cs, "UTF-8") == 0;
+	}
+#endif
+
 	cbreak();
+	noecho();
 
 	if (argc == 2) {
 		srand(seed = atoi(argv[1]));
 	} else {
 		srand(seed = (int)time(NULL));
 	}
-	init_vars();
 
-	do {
-		deal_number++;
-		shuffle(deck_size);
-		deal_cards();
-		display_cards(deal_number);
-		play_game();
-	} while ((deck_size = collect_discards()) != 0);
+	for (;;) {
+		init_vars();
+		deal_number = 0;
 
-	game_finished(deal_number);
+		do {
+			deal_number++;
+			shuffle(deck_size);
+			deal_cards();
+			display_cards(deal_number);
+			play_game();
+		} while ((deck_size = collect_discards()) != 0);
+
+		game_finished(deal_number);
+		if (!another_game()) {
+			break;
+		}
+		srand(seed = rand());
+	}
 
 	die(0);
 }
