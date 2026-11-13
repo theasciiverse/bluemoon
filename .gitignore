@@ -3,3 +3,8 @@ MANIFEST
 bluemoon
 bluemoon.6
 bluemoon.html
+
+# Asciiverse packaging (asciiverse/package.sh)
+/stage
+/dist
+/bluemoon.exe
